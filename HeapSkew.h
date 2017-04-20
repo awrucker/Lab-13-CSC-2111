@@ -88,6 +88,8 @@ T* HeapSkew<T>::heapRemove()
    BinaryTree<T>* right = bt->detachRightSubtree();
    delete bt;
    bt = merge(left, right);
+   delete left;
+   delete right;
 }
 
 template < class T >
