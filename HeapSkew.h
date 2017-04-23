@@ -3,7 +3,8 @@
 
 #include "BinaryTree.h"
 #include "wx/wx.h"
-
+#include <iostream>
+using namespace std;
 template < class T >
 class HeapSkew : public Drawable
 {
@@ -54,57 +55,39 @@ template < class T >
 BinaryTree<T>* HeapSkew<T>::merge(BinaryTree<T>* left, BinaryTree<T>* right)
 {
   //DO THIS
-template < class T >
-BinaryTree<T>* HeapSkew<T>::merge(BinaryTree<T>* left, BinaryTree<T>* right)
-{
-  //DO THIS
-if (left->isEmpty())
-{
-   return right;
-}
-else if (right->isEmpty())
-{
-   return left;
-}
+	if (left->isEmpty())
+	{
+	   return right;
+	}
+	else if (right->isEmpty())
+	{
+	   return left;
+	}
+	BinaryTree<T>* result;
+	int rootscomp=(*compare_items)(left->getRootItem(), right->getRootItem());
+	if(rootscomp < 0)
+	{
+			result = merge(right, left);
+	}
+	else
+	{
+		result = left;
+		BinaryTree<T>* LL = result->detachLeftSubtree();
+		BinaryTree<T>* LR = result->detachRightSubtree();
 
-int rootscomp=(*compare_items)(left->getRootNode(),right->getRootNode)
-//if left is greater 1 if right is -1
-if(rootscomp <0)
-{
-     HeapSkew(right,left); /// needs to be set to somthing
-}
-
-BinaryTree<T>* LL= left->detachLeftSubtree();
-BinaryTree<T>* LR= left->detachRightSubTree();
-
-LR->attachRightSubtree(LL);
-
-
-if(LR->isEmpty())
-{
-LL->attachLeftSubtree(right);
-return left;
-}
-else
-{
-  LL->attachLeftSubtree( HeapSkew(LR,right));
-  return left;
-}
+		result->attachRightSubtree(LL);
+		if(LR->isEmpty())
+		{
+			LL->attachRightSubtree(right);
+		}
+		else
+		{
+			result->attachLeftSubtree(merge(LR, right));
+		}
+	}
+	return result;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-}
 
 template < class T >
 void HeapSkew<T>::heapInsert(T* item)
@@ -112,7 +95,6 @@ void HeapSkew<T>::heapInsert(T* item)
    //DO THIS (calls merge, should be short)
    BinaryTree<T>* right = new BinaryTree<T>(item);
    bt = merge(bt, right);
-   delete right;
 }
 
 template < class T >
@@ -122,9 +104,10 @@ T* HeapSkew<T>::heapRemove()
    T* item = bt->getRootItem();
    BinaryTree<T>* left = bt->detachLeftSubtree();
    BinaryTree<T>* right = bt->detachRightSubtree();
+   cout<<"Working"<<endl;
    delete bt;
    bt = merge(left, right);
-   delete left;
+   cout<<"Failed"<<endl;
    delete right;
 }
 

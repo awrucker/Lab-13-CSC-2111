@@ -37,8 +37,10 @@ int main()
    HeapSkew<CD>* sh = new HeapSkew<CD>(&CD::compare_items);
 
    ListArrayIterator<CD>* iter = cds->iterator();
+   int x = 1;
    while(iter->hasNext())
    {
+	  cout<<x++<<endl;
       CD* cd = iter->next();
       sh->heapInsert(cd);
    }
