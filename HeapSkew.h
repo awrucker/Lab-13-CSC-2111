@@ -1,3 +1,8 @@
+/*
+	Dylan Bush & Adam Rucker
+	4/23/2017
+	Lab 13/ Heap Skew Lab
+*/	
 #if !defined HEAPSKEW_H
 #define HEAPSKEW_H
 
@@ -67,10 +72,12 @@ BinaryTree<T>* HeapSkew<T>::merge(BinaryTree<T>* left, BinaryTree<T>* right)
 	int rootscomp=(*compare_items)(left->getRootItem(), right->getRootItem());
 	if(rootscomp < 0)
 	{
+		//cout<<"right > left"<<endl;
 			result = merge(right, left);
 	}
 	else
 	{
+		//cout<<"Running through the not recursive part"<<endl;
 		result = left;
 		BinaryTree<T>* LL = result->detachLeftSubtree();
 		BinaryTree<T>* LR = result->detachRightSubtree();
@@ -78,12 +85,14 @@ BinaryTree<T>* HeapSkew<T>::merge(BinaryTree<T>* left, BinaryTree<T>* right)
 		result->attachRightSubtree(LL);
 		if(LR->isEmpty())
 		{
-			LL->attachRightSubtree(right);
+			result->attachLeftSubtree(right);
 		}
 		else
 		{
 			result->attachLeftSubtree(merge(LR, right));
 		}
+		delete LL;
+		delete LR;
 	}
 	return result;
 }
@@ -93,6 +102,7 @@ template < class T >
 void HeapSkew<T>::heapInsert(T* item)
 {
    //DO THIS (calls merge, should be short)
+   sze++;
    BinaryTree<T>* right = new BinaryTree<T>(item);
    bt = merge(bt, right);
 }
@@ -104,11 +114,11 @@ T* HeapSkew<T>::heapRemove()
    T* item = bt->getRootItem();
    BinaryTree<T>* left = bt->detachLeftSubtree();
    BinaryTree<T>* right = bt->detachRightSubtree();
-   cout<<"Working"<<endl;
    delete bt;
    bt = merge(left, right);
    cout<<"Failed"<<endl;
    delete right;
+   return item;
 }
 
 template < class T >

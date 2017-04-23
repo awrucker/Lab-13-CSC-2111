@@ -1,3 +1,8 @@
+/*
+	Dylan Bush & Adam Rucker
+	4/23/2017
+	Lab 13/ Heap Skew Lab
+*/
 #include "HeapArray.h"
 #include "HeapSkew.h"
 #include "PQHeap.h"
@@ -32,28 +37,27 @@ int main()
    int num_items = cds->size();
    cout << num_items << endl;
 
-//while(true)
-//{
+while(true)
+{
    HeapSkew<CD>* sh = new HeapSkew<CD>(&CD::compare_items);
 
    ListArrayIterator<CD>* iter = cds->iterator();
-   int x = 1;
    while(iter->hasNext())
    {
-	  cout<<x++<<endl;
       CD* cd = iter->next();
       sh->heapInsert(cd);
    }
    delete iter;
-
+	cout<<sh->heapIsEmpty()<<endl;
    while(!(sh->heapIsEmpty()))
    {
       CD* cd = sh->heapRemove();
-      cd->displayCD();
+      cd->getKey()->displayString();
+	  cout<<endl;
    }
 
    delete sh;
-//}
+}
    deleteCDs(cds);
    delete cds;
 

@@ -1,3 +1,8 @@
+/*
+	Dylan Bush & Adam Rucker
+	4/23/2017
+	Lab 13/ Heap Skew Lab
+*/
 #include "wx/wx.h"
 #include "wx/sizer.h"
 
