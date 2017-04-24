@@ -111,13 +111,12 @@ template < class T >
 T* HeapSkew<T>::heapRemove()
 {
    //DO THIS (calls merge, should be short)
+   sze--;
    T* item = bt->getRootItem();
    BinaryTree<T>* left = bt->detachLeftSubtree();
    BinaryTree<T>* right = bt->detachRightSubtree();
    delete bt;
    bt = merge(left, right);
-   cout<<"Failed"<<endl;
-   delete right;
    return item;
 }
 
