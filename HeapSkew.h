@@ -17,6 +17,9 @@ class HeapSkew : public Drawable
    private:
       BinaryTree<T>* bt;
       int sze;
+      
+      // pre Takes two trees and 
+      // post returns a new binary tree that is a heap
       BinaryTree<T>* merge(BinaryTree<T>* left, BinaryTree<T>* right);
 
       int (*compare_items) (T* item_1, T* item_2);
@@ -81,34 +84,35 @@ BinaryTree<T>* HeapSkew<T>::merge(BinaryTree<T>* left, BinaryTree<T>* right)
   //DO THIS
 	if (left->isEmpty())
 	{
-	   return right;
+	   return right;        //if left is empty return the right subtree
 	}
 	else if (right->isEmpty())
 	{
-	   return left;
+	   return left;      // if right is empty return the left subtree
 	}
 	BinaryTree<T>* result;
-	int rootscomp=(*compare_items)(left->getRootItem(), right->getRootItem());
+	int rootscomp=(*compare_items)(left->getRootItem(), right->getRootItem());   //gets a compare
 	if(rootscomp < 0)
 	{
 		//cout<<"right > left"<<endl;
-			result = merge(right, left);
+			result = merge(right, left);      //recursivly calls the function
 	}
 	else
 	{
 		//cout<<"Running through the not recursive part"<<endl;
 		result = left;
-		BinaryTree<T>* LL = result->detachLeftSubtree();
-		BinaryTree<T>* LR = result->detachRightSubtree();
+		BinaryTree<T>* LL = result->detachLeftSubtree();      //puts the result of detatch left into LL
+	
+		BinaryTree<T>* LR = result->detachRightSubtree();     // puts the result of detatch right into LR
 
 		result->attachRightSubtree(LL);
 		if(LR->isEmpty())
 		{
-			result->attachLeftSubtree(right);
+			result->attachLeftSubtree(right);     //combining the trees into heap
 		}
 		else
 		{
-			result->attachLeftSubtree(merge(LR, right));
+			result->attachLeftSubtree(merge(LR, right));//combining the trees into heap
 		}
 		delete LL;
 		delete LR;
@@ -122,8 +126,8 @@ void HeapSkew<T>::heapInsert(T* item)
 {
    //DO THIS (calls merge, should be short)
    sze++;
-   BinaryTree<T>* right = new BinaryTree<T>(item);
-   bt = merge(bt, right);
+   BinaryTree<T>* right = new BinaryTree<T>(item); 
+   bt = merge(bt, right);  //calls merge
 }
 
 template < class T >
